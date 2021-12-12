@@ -1,9 +1,14 @@
-version: "3.1"
+version: "3.3"
 
 services:
   reverse_proxy:
     build: ./reverse_proxy
-    user: nginx
+    # user: nginx
+    networks:
+      - front-tier
+    secrets:
+      - revprox_cert
+      - revprox_key    
 
   database:
     build: 
@@ -45,12 +50,17 @@ services:
       - payment_token
 
 networks:
-  front-tier:
-  back-tier:
+  front-tier: null 
+  back-tier: null
   payment:
+    attachable: true
     driver: overlay
 
 secrets:
+  revprox_cert:
+    file: ./certs/domain.crt
+  revprox_key:
+    file: ./certs/domain.key
   postgres_password:
     file: ./devsecrets/postgres_password
   payment_token:
