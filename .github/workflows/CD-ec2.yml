@@ -45,7 +45,9 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           timeout: 60s
           script: |
-            export TAG=${{ steps.vars.outputs.tag }}
+            echo ${{ steps.var.outputs.tag }}
+            export TAG=${{ steps.var.outputs.tag }}
+            docker swarm leave -f
             docker swarm init
             echo "${{ secrets.REVPROX_CERT }}" | docker secret create revprox_cert -
             echo "${{ secrets.REVPROX_KEY }}" | docker secret create revprox_key -
