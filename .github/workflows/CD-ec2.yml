@@ -54,6 +54,7 @@ jobs:
             echo "${{ secrets.POSTGRES_PASSWORD }}" | docker secret create postgres_password -
             echo "${{ secrets.PAYMENT_TOKEN }}" | docker secret create payment_token -
             docker stack deploy --compose-file docker-compose-prod.yml atsea-pdn
+      
       - name: Trigger end to end tests
         run: |
           curl --request POST \
