@@ -25,9 +25,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
       - name: Check instance running
-        run: if [ $(aws ec2 describe-instances --instance-ids i-0dbf2aaca8ef93a4d --query 'Reservations[].Instances[].State[].Name' --output text --profile praxis) = "stopped" ] ; then \
-              aws ec2 start-instances --instance-ids i-0dbf2aaca8ef93a4d ; \
-              fi;
+        run: |
+              if [[ $(aws ec2 describe-instances --instance-ids ${{secrets.EC2_INSTANCE}} --query 'Reservations[].Instances[].State[].Name' --output text) = "stopped" ]] ; then 
+                aws ec2 start-instances --instance-ids ${{secrets.EC2_INSTANCE}} ; 
+              fi
       - name: Copy docker compose file to EC2
         uses: appleboy/scp-action@master
         with:
