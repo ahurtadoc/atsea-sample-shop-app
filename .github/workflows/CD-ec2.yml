@@ -4,7 +4,8 @@ on:
   workflow_run:
     workflows:
      - Push Docker Images CI
-    is: success
+    types: 
+     - completed
   
 
 jobs:
