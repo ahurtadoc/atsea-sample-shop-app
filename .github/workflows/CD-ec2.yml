@@ -51,7 +51,7 @@ jobs:
             echo "${{ secrets.REVPROX_KEY }}" | docker secret create revprox_key -
             echo "${{ secrets.POSTGRES_PASSWORD }}" | docker secret create postgres_password -
             echo "${{ secrets.PAYMENT_TOKEN }}" | docker secret create payment_token -
-            docker stack deploy --compose-file docker-compose-pdn.yml atsea-pdn
+            docker stack deploy --compose-file docker-compose-prod.yml atsea-pdn
   on-failure:
       runs-on: ubuntu-latest
       if: ${{ github.event.workflow_run.conclusion == 'failure' }}
