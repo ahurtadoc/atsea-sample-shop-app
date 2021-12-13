@@ -38,19 +38,19 @@ jobs:
           target: "/home/${{ secrets.EC2_USERNAME }}"
       - name: Deploy docker stack
         uses: appleboy/ssh-action@master
-          with:
-            host: ${{ secrets.HOST }}
-            username: ${{ secrets.EC2_USERNAME }}
-            key: ${{ secrets.EC2_KEY }}
-            timeout: 60s
-            script: |
-              export TAG=${{ steps.vars.outputs.tag }}
-              docker swarm init
-              echo "${{ secrets.REVPROX_CERT }}" | docker secret create revprox_cert -
-              echo "${{ secrets.REVPROX_KEY }}" | docker secret create revprox_key -
-              echo "${{ secrets.POSTGRES_PASSWORD }}" | docker secret create postgres_password -
-              echo "${{ secrets.PAYMENT_TOKEN }}" | docker secret create payment_token -
-              docker stack deploy --compose-file docker-compose-pdn.yml atsea-pdn
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_KEY }}
+          timeout: 60s
+          script: |
+            export TAG=${{ steps.vars.outputs.tag }}
+            docker swarm init
+            echo "${{ secrets.REVPROX_CERT }}" | docker secret create revprox_cert -
+            echo "${{ secrets.REVPROX_KEY }}" | docker secret create revprox_key -
+            echo "${{ secrets.POSTGRES_PASSWORD }}" | docker secret create postgres_password -
+            echo "${{ secrets.PAYMENT_TOKEN }}" | docker secret create payment_token -
+            docker stack deploy --compose-file docker-compose-pdn.yml atsea-pdn
  on-failure:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
