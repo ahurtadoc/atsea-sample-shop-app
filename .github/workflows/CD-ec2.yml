@@ -1,0 +1,20 @@
+name: Deploy in AWS ec2
+
+on:
+  workflow_run:
+    workflows:
+     - Push Docker Images CI
+    is: success
+  
+
+jobs:
+  runs-on: ubuntu-latest
+  
+  steps:
+    - name: Check out the repo
+      uses: actions/checkout@v2
+    - name: Get tags
+      id: var
+      run: echo "::set-output name=tag::$(git rev-parse --short HEAD)"
+    - name: Check outputs
+      run: echo ${{ steps.var.outputs.tag }}
