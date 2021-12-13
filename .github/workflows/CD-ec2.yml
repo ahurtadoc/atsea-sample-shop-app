@@ -18,12 +18,12 @@ jobs:
         run: echo "::set-output name=tag::$(git rev-parse --short HEAD)"
       - name: Check outputs
         run: echo ${{ steps.var.outputs.tag }}
-      - name: Configure AWS Credentials
+      - name: Configure AWS Credentisals
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ secrets.AWS_REGION }}
       - name: Check instance running
         run: if [ $(aws ec2 describe-instances --instance-ids i-0dbf2aaca8ef93a4d --query 'Reservations[].Instances[].State[].Name' --output text --profile praxis) = "stopped" ] ; then \
               aws ec2 start-instances --instance-ids i-0dbf2aaca8ef93a4d ; \
