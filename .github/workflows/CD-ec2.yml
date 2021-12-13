@@ -54,6 +54,16 @@ jobs:
             echo "${{ secrets.POSTGRES_PASSWORD }}" | docker secret create postgres_password -
             echo "${{ secrets.PAYMENT_TOKEN }}" | docker secret create payment_token -
             docker stack deploy --compose-file docker-compose-prod.yml atsea-pdn
+      - name: Trigger end to end tests
+        run: |
+          curl --request POST \
+          --url https://api.github.com/repos/ahurtadoc/atsea-tests/dispatches \
+          --header 'authorization: Bearer ${{ secrets.ACCESS_TOKEN }}' \
+          --header 'Accept: application/vnd.github.v3+json' \
+          --data '{
+            "event_type": "deployed"
+            }' \
+          --fail      
   on-failure:
       runs-on: ubuntu-latest
       if: ${{ github.event.workflow_run.conclusion == 'failure' }}
