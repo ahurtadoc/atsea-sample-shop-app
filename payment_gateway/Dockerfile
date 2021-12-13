@@ -1,4 +1,4 @@
-FROM alpine:3.14
+FROM nginx:1.15-alpine
 
 RUN adduser -D payment
 USER payment
